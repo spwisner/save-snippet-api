@@ -31,17 +31,16 @@ const snippetSchema = new mongoose.Schema({
 }, {
   timestamps: true,
   toJSON: {
-    virtuals: true,
-    transform: function (doc, ret, options) {
+    virtuals: false,
+    transform: function(doc, ret, options) {
       let userId = (options.user && options.user._id) || false;
       ret.editable = userId && userId.equals(doc._owner);
       return ret;
     },
   },
-});
-
-snippetSchema.virtual('length').get(function length() {
-  return this.text.length;
+  toObject: {
+    virtuals: false
+  }
 });
 
 const Snippet = mongoose.model('Snippet', snippetSchema);
