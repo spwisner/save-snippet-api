@@ -9,17 +9,17 @@ const setUser = require('./concerns/set-current-user');
 const setModel = require('./concerns/set-mongoose-model');
 
 const index = (req, res, next) => {
-  Snippet.find({ _owner: req.user._id })
+  Snippet.find()
     .then(snippets => res.json({
       snippets: snippets.map((e) =>
-        e.toJSON({ virtuals: false, user: req.user })),
+        e.toJSON({ virtuals: true, user: req.user })),
     }))
     .catch(next);
 };
 
 const show = (req, res) => {
   res.json({
-    snippet: req.snippet.toJSON({ virtuals: false, user: req.user }),
+    snippet: req.snippet.toJSON({ virtuals: true, user: req.user }),
   });
 };
 
@@ -31,13 +31,13 @@ const create = (req, res, next) => {
     .then(snippet =>
       res.status(201)
         .json({
-          snippet: snippet.toJSON({ virtuals: false, user: req.user }),
+          snippet: snippet.toJSON({ virtuals: true, user: req.user }),
         }))
     .catch(next);
 };
 
 const update = (req, res, next) => {
-  delete req.body._owner;
+  delete req.body._owner;  // disallow owner reassignment.
   req.snippet.update(req.body.snippet)
     .then(() => res.sendStatus(204))
     .catch(next);
