@@ -13,7 +13,7 @@ const snippetSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   code: {
     type: String,
@@ -21,7 +21,7 @@ const snippetSchema = new mongoose.Schema({
   },
   notes: {
     type: String,
-    required: true,
+    required: false,
   },
   _owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,7 +40,7 @@ const snippetSchema = new mongoose.Schema({
   },
   toObject: {
     virtuals: false
-  }
+  },
 });
 
 const Snippet = mongoose.model('Snippet', snippetSchema);
